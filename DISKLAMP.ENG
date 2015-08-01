@@ -1,0 +1,244 @@
+
+       DiskLamp Ver 3.17.  Copyright (c) 1992 by Sergey Gershtein
+
+
+                   DiskLamp Utility Version 3.17
+
+                        Short User's Guide
+
+   DiskLamp  utility  shows  you  any  disk  access  and allows you to
+control it.  DiskLamp controls situation via the 13th (hex)  interrupt
+vector,  so  that  programs  not  using  this  vector for disk service
+unfortunately can't be  controlled.  But  use of interrupt  13h is the
+only legal method for low-level disk service.  Working with controller
+or calling directly to ROM BIOS procedures are not recommended by  the
+IBM corporation and can  easily lead to a  bad result if the  computer
+has a little non-standard equipment.  That's why there are only a  few
+programs using  those dangerous  methods.   And hence,  most of  usual
+programs are controllable.
+
+   Disk working  indication appears  in the  upper-left corner  of the
+screen. Indication shows a logical  drive is being working. If  a work
+is  going   on  the   whole  hard   disk  (for   example,   controller
+initialization,  etc.)  indicator  shows  'HD'.   Work  with   sectors
+situated before  the first  DOS logical  drive is  indicated as  '?:'.
+Working with MBR (Master Boot Record) of the hard disk (it is situated
+on the very first sector of  the disk) is indicated as 'ş:'.   Working
+with hard disk sectors situated  between the DOS logical drives  space
+or after  it is  indicated as  working with  the nearest  previous DOS
+logical drive.
+
+   Example:
+
+ ÚÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄ·
+ ³ MBR ³ nonDOS ³ driveC ³ nonDOS ³ driveD ³ driveE ³ driveF ³nonDOSº
+ ÔÍÍÍÍÍÏÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍ¼
+  ^   ^ ^      ^ ^               ^ ^      ^ ^      ^ ^             ^
+  ³   ³ ³      ³ ³               ³ ³      ³ ³      ³ ³             ³
+  ÀÄÄÄÙ ÀÄÄÄÄÄÄÙ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ ÀÄÄÄÄÄÄÙ ÀÄÄÄÄÄÄÙ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+   [ş:]   [?:]         [C:]          [D:]     [E:]        [F:]
+
+   The color of indicator has following meaning:
+
+     * Red   - writing;
+     * Green - reading;
+     * Cyan  - verifying;
+     * Blue  - formatting;
+     * Black - other  functions  (such as: track  seek, set  / request
+               parameters, controller initialization, etc.)
+
+   Besides the color of indicator there is special letter showing  you
+the kind of disk operation:
+
+      R - reading;
+      W - writing;
+      F - formatting;
+      v - verifying;
+      * - other operations.
+
+   Disk working using DOS or other high-level service is indicated  by
+capital letter(s)  (for example  'C:', 'HD');  using low-level service
+BIOS (int 13h) or device drivers is indicated as 'c:', 'hd', etc.   Of
+course, indicating '?:' or 'ş:' means low-level BIOS service  working,
+because there is no other way to access those areas of your disk.
+
+
+   DiskLamp  utility  can  work  with  any  screen  adapter, including
+monochrome, but on  CGA screen may  be snowy. It's  because of an  old
+screen adapter.
+
+
+   The size of DiskLamp utility is  6 kilobytes in the file and  about
+600 bytes in memory (depends on  the number of logical drives on  your
+computer). It is  possible for DiskLamp  to uninstall itself  and free
+those 600 bytes  memory if only  no resident has  been installed after
+DiskLamp cought int 13h. If  so, DiskLamp tells you that  it  couldn't
+be  uninstalled.  Then  you've  got  to uninstall that resident first.
+After  all  you  are  free  to  reboot  any time you want to free your
+computer memory.
+
+
+   There are two choices of drive access indication - with a border or
+without it. Choose one you'd like more:
+
+   Left-upper screen corner Ä¿
+      ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄ¿
+      V                               V
+      ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ            ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+      º C:R°°°°°°°°°°°°°°  .          º ‘:R°°°°°°°°°°°°°°°°°° .
+      º°°°°°°°°°°°°°°°°°°  .          ºÄÄÄÙ°°°°°°°°°°°°°°°°°° .
+      º°°°°°°°°°°°°°°°°°°  .          º°°°°°°°°°°°°°°°°°°°°°° .
+      º  .  .  .  .  .  .  .          º   .   .   .   .   .   .
+
+        Border is off                   Border is on
+
+
+   Running Disklamp:
+
+
+      DISKLAMP /B+   - Installing DiskLamp and switching border on. If
+                       DiskLamp  was  already  installed  only  border
+                       switching takes place.
+
+      DISKLAMP /B+   - Installing DiskLamp  and switching  border off.
+                       If DiskLamp  was already installed only  border
+                       switching takes place.
+
+      DISKLAMP /Q    - Uninstalling Disklamp. In case of impossibility
+                       of uninstalling or  absence DiskLamp in  memory
+                       special message is generated.
+
+      DISKLAMP /H or
+      DISKLAMP /?    - Short help.
+
+      DISKLAMP       - It   is  a  most  interesting  case  -  running
+                       DiskLamp for working in menu.  In menu  you can
+                       set all DiskLamp parameters. Working in menu is
+                       very simple and comfortable.
+
+      DISKLAMP /N    - Working  in DiskLamp menu without using EGA/VGA
+                       abilities.  Use   this  switch   if  you   have
+                       non-standart screen adapter.
+
+      DISKLAMP /S    - Silent  mode.  Use this  switch when you  don't
+                       want to activate DiskLamp menu, e.g. to  toggle
+                       color on / off : DISKLAMP /S/C-
+
+      DISKLAMP /M    - It's  an opposite switch, use it when you  want
+                       DiskLamp  to  activate  menu,  but also want to
+                       set  some  parameters  from  command  line. For
+                       example: DISKLAMP /B+/M
+
+
+   Besides, you can set any  drive access parameter just from  the DOS
+prompt. There are special switches:
+
+   DISKLAMP /<command> d: {+|-}
+
+   <command>:  F - formatting;              d:  -  drive
+               W - writing;                 +   -  switch on
+               A - access;                  -   -  switch off
+               I - indication;
+
+   For example DISKLAMP  /A ?: -  /F C: -  D:  +  makes DiskLamp to go
+resident (if  it wasn't  there already)  and to  protect access to MBR
+and other sectors  before the first  DOS logical drive  (see below for
+more information about '?' sign),  to protect formatting drive C:  and
+to  permit  formatting  drive  D:.
+
+   Looking  at  this example, you can easily built any other you need.
+
+   This version of DiskLamp allow  you to type '-' everywhere  instead
+of '/'.
+
+   In all the  cases described above,  you can add  the /C- switch  to
+make  DiskLamp  work  in  black/white  mode,  or switch /C+  for color
+mode.  Unfortunately, the /C+ switch cannot make monochrome adapter to
+use color, so do not use it with monochrome one.
+
+
+   Working in menu, you've got a table on your screen with columns  of
+logical drives  of your  computer and  rows of  access and  indication
+options. Sign '?' in the table means all the hard disk sectors  before
+the first DOS  logical drive, including  MBR. Using cursor  arrow keys
+you  can  move  the  frame  to  any  position  in  the table; pressing
+<Enter> or space  bar key toggle  option on /  off.  Behind  the table
+there  are  two  more  options  -  border  indication  (on  / off) and
+escaping (quit / resident). You can toggle them like all the others.
+
+   When  you  toggle  any  options  except escaping itself, 'escaping'
+immediately switches to  'resident'. It means  that when you'll  press
+<ESC>, having switched all the options as you need, DiskLamp will stay
+resident.  To uninstall DiskLamp you have to toggle escaping to 'quit'
+and right away press <ESC>.
+
+   There are  three groups  of disk operations DiskLamp allows you  to
+control: access, writing and formatting. Surely, if you protect access
+to a disk you're  not able to permit  reading or formating there.  You
+will  be  warned  if  you  try  to  protect access to the drive, where
+COMMAND.COM (or other  command processor) is  placed, because in  this
+case you may have to reboot after escaping DiskLamp.
+
+   In the table sign 'X' means that there are no such a drive on  your
+computer. A point in the table means that the drive is a phantom  (for
+example drive B: on the computer with only one floppy drive),  virtual
+or network drive.  Disklamp can neither  control drive access  to such
+disks, nor indicate it.
+
+   If you want Disklamp to be installed automatically when you  switch
+your  computer  on,   add  to  the   file  'C:\AUTOEXEC.BAT'  a   line
+'C:\PATH\DISKLAMP /S', where instead of 'C:\PATH' specify a real  path
+to Disklamp on your disk.
+
+
+   DiskLamp  needs  for  working  DOS  version  3.0  or  newer.  It is
+possible  for  CGA  adapter  to  make  snow  during  DiskLamp working.
+Specially recommended EGA or VGA adapters.
+
+
+   Disklamp  utility  was  made  in  Russia,  Ekaterinburg  by  Sergey
+Gershtein (the Urals State University, mathematics department).
+
+
+   DiskLamp is distributed as FREEWARE,  it means that you can  freely
+use, copy, distribute it,  while it's not used  in business.  You  may
+not anyhow modify or rename  Disklamp utility. You are only  permitted
+to distribute full set of files: both DISKLAMP.COM and DISKLAMP.ENG.
+
+   Disklamp version  3.17 was  released 3/7/93.  In this  version some
+mistakes of the version 3.16 were corrected.
+
+
+   During Disklamp execution following problems were detected:
+
+      *  Incompatibility with  IO-HARD!  If  DiskLamp and  IO-HARD are
+         both  resident  at  the  same  time and IO-HARD went resident
+         first, DiskLamp  indication may  sometimes not  to leave  the
+         screen.
+
+      *  If  RELEASE  was  loaded  resident   before  DiskLamp,   then
+         uninstalling Disklamp may result  in a problem with  RELEASE.
+         However, it's true not only  for DiskLamp, but for any  other
+         resident. This defect  of RELEASE was  corrected in its  last
+         version.
+
+      *  Command interpreter NDOS  (from the set of Norton  Utilities)
+         needs data swapping with system disk (usually C:). So, if you
+         protect  writing  to  this  disk  you  may  very soon have to
+         reboot.
+
+                                                      Sergey Gershtein
+                                                       (343-2) 562-387
+
+P.S. Sergey Gershtein will be very pleased for your messaging of found
+problems, mistakes in Disklamp; or  maybe you'd want to tell  him your
+wishes of making DiskLamp better?
+
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+If  you've  got  interested  of  other  programms of Sergey Gershtein,
+write,  or  better  send  a  new  diskette  (or  money  to buy it) for
+freewares  and  demo  versions  to:   Sergey  Gershtein,  mail box 84,
+Ekaterinburg, 620095, Russia. Don't forget to specify your address!
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
